@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DPR Philippines Performance Dashboard</title>
+  <meta name="description" content="Interactive performance dashboard for the Disaster Preparedness and Response Project in the Philippines.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Dashboard navigation">
+      <div class="brand">
+        <h2>DPR Philippines</h2>
+        <p>International Medical Corps Philippine Mission<br>Latter-day Saint Charities Australia</p>
+      </div>
+      <div class="nav-title">Performance</div>
+      <nav>
+        <button class="nav-button active" data-section="overview">Executive Overview</button>
+        <button class="nav-button" data-section="performance">Activity Performance</button>
+        <button class="nav-button" data-section="missions">Medical Missions</button>
+        <button class="nav-button" data-section="facilities">Health Facilities</button>
+        <button class="nav-button" data-section="distributions">Distributions</button>
+        <button class="nav-button" data-section="quality">Data Quality</button>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h1>Disaster Preparedness and Response Project</h1>
+          <div class="subtitle">Philippines · Implementation end: 31 December 2026</div>
+        </div>
+        <div class="top-actions">
+          <div>
+            <label class="control-label" for="reportingDate">Reporting date</label>
+            <input id="reportingDate" type="date" value="2026-08-11">
+          </div>
+          <button class="button secondary" id="printButton" type="button">Print / PDF</button>
+          <button class="button" id="exportCsvButton" type="button">Export CSV</button>
+        </div>
+      </header>
+
+      <div class="notice">
+        Direct beneficiary reach, household assistance, consultation encounters, and estimated health-facility catchment population are reported separately. Activity 2 is needs-based and has no fixed numerical target.
+      </div>
+
+      <section id="overview" class="section">
+        <div class="hero glass">
+          <div>
+            <h2>Executive performance snapshot</h2>
+            <p id="healthSummary"></p>
+            <div class="progress-row">
+              <span>Implementation time remaining</span>
+              <strong id="remainingText"></strong>
+            </div>
+            <div class="progress" aria-label="Time remaining to project end">
+              <span id="timeRemainingBar" style="width:0"></span>
+            </div>
+          </div>
+          <div class="countdown-grid">
+            <div class="mini-card">
+              <strong id="daysRemaining">—</strong>
+              <span>calendar days remaining</span>
+            </div>
+            <div class="mini-card">
+              <strong id="monthsRemaining">—</strong>
+              <span>approx. months remaining</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="kpi-grid">
+          <article class="kpi-card glass">
+            <div class="kpi-label">Unique direct people reached</div>
+            <div class="kpi-value" id="directReachValue">—</div>
+            <div class="kpi-note" id="directReachNote"></div>
+          </article>
+          <article class="kpi-card glass">
+            <div class="kpi-label">Medical consultation reach</div>
+            <div class="kpi-value" id="consultationReach">—</div>
+            <div class="kpi-note">Target: 4,000 individuals.</div>
+          </article>
+          <article class="kpi-card glass">
+            <div class="kpi-label">Nutrition / maternal reach</div>
+            <div class="kpi-value" id="nutritionReach">—</div>
+            <div class="kpi-note">96 nutritionally-at-risk / MAM / SAM children + 30 pregnant and lactating women.</div>
+          </article>
+          <article class="kpi-card glass">
+            <div class="kpi-label">Frontline workers trained</div>
+            <div class="kpi-value" id="trainingReach">—</div>
+            <div class="kpi-note">Target: 450 frontline workers.</div>
+          </article>
+          <article class="kpi-card glass">
+            <div class="kpi-label">Health facilities supported</div>
+            <div class="kpi-value" id="facilityReach">—</div>
+            <div class="kpi-note">Activity 2 is needs-based; no fixed target.</div>
+          </article>
+          <article class="kpi-card glass">
+            <div class="kpi-label">Estimated catchment population</div>
+            <div class="kpi-value" id="catchmentReach">—</div>
+            <div class="kpi-note">Potential facility coverage; not direct reach.</div>
+          </article>
+          <article class="kpi-card glass">
+            <div class="kpi-label">Generators distributed</div>
+            <div class="kpi-value" id="generatorReach">—</div>
+            <div class="kpi-note">Target: 25 generator sets.</div>
+          </article>
+          <article class="kpi-card glass">
+            <div class="kpi-label">Fuel distributed</div>
+            <div class="kpi-value" id="fuelReach">—</div>
+            <div class="kpi-note">Verified reporting total.</div>
+          </article>
+          <article class="kpi-card glass">
+            <div class="kpi-label">Medical rescue boat</div>
+            <div class="kpi-value" id="boatReach">—</div>
+            <div class="kpi-note">Completed in Hagonoy, Bulacan in July 2026.</div>
+          </article>
+          <article class="kpi-card glass">
+            <div class="kpi-label">Hygiene-kit households</div>
+            <div class="kpi-value" id="hygieneHouseholds">—</div>
+            <div class="kpi-note">410 households · 1,681 people.</div>
+          </article>
+          <article class="kpi-card glass">
+            <div class="kpi-label">Household-kit households</div>
+            <div class="kpi-value" id="householdHouseholds">—</div>
+            <div class="kpi-note">390 households · 1,599 people.</div>
+          </article>
+          <article class="kpi-card glass">
+            <div class="kpi-label">MPCA households</div>
+            <div class="kpi-value" id="mpcaHouseholds">—</div>
+            <div class="kpi-note">152 households · 676 people.</div>
+          </article>
+          <article class="kpi-card glass">
+            <div class="kpi-label">Activity 4 people reached</div>
+            <div class="kpi-value" id="activity4People">—</div>
+            <div class="kpi-note">No duplication across assistance modalities is confirmed.</div>
+          </article>
+        </div>
+
+        <div class="viz-grid viz-grid-3">
+          <article class="viz-card glass">
+            <div class="viz-head"><h3>Overall direct reach</h3><p>Progress to 16,750 target</p></div>
+            <div class="chart-wrap large"><canvas id="directReachChart"></canvas></div>
+          </article>
+          <article class="viz-card glass">
+            <div class="viz-head"><h3>Activity completion rates</h3><p>Fixed-target activities only</p></div>
+            <div class="chart-wrap"><canvas id="activityCompletionChart"></canvas></div>
+          </article>
+          <article class="viz-card glass">
+            <div class="viz-head"><h3>Activity 4 assistance reach</h3><p>People reached by modality</p></div>
+            <div class="chart-wrap"><canvas id="activity4ModalityChart"></canvas></div>
+          </article>
+        </div>
+
+
+        <div class="section-head overview-subsection-head">
+          <div>
+            <h2>Recommended Management Actions</h2>
+            <p>Priority actions recommended to address current performance gaps and sustain implementation momentum.</p>
+          </div>
+        </div>
+        <div class="table-wrap recommended-actions-table">
+          <table>
+            <thead>
+              <tr><th>Recommended action</th><th>Responsible function</th><th>Due date</th><th>Priority</th><th>Status</th></tr>
+            </thead>
+            <tbody id="actionsBody"></tbody>
+          </table>
+        </div>
+
+        <div id="consistencyCheck" class="check"></div>
+      </section>
+
+      <section id="performance" class="section" hidden>
+        <div class="section-head">
+          <div>
+            <h2>Activity Performance</h2>
+            <p>Target versus reach, with dynamic remaining workload based on the reporting date.</p>
+          </div>
+        </div>
+        <div class="filters glass">
+          <div>
+            <label for="activityFilter">Activity</label>
+            <select id="activityFilter"><option value="all">All activities</option></select>
+          </div>
+          <div>
+            <label for="statusFilter">Status</label>
+            <select id="statusFilter">
+              <option value="all">All statuses</option>
+              <option value="Critical">Critical</option>
+              <option value="At risk">At risk</option>
+              <option value="On track">On track</option>
+              <option value="Completed">Completed</option>
+              <option value="Needs-based">Needs-based</option>
+            </select>
+          </div>
+          <div>
+            <label for="searchFilter">Search</label>
+            <input id="searchFilter" type="text" placeholder="Search activities">
+          </div>
+        </div>
+        <div class="viz-grid viz-grid-2 compact-gap">
+          <article class="viz-card glass">
+            <div class="viz-head"><h3>Reach vs target</h3><p>Core activity comparison</p></div>
+            <div class="chart-wrap"><canvas id="targetVsReachChart"></canvas></div>
+          </article>
+          <article class="viz-card glass">
+            <div class="viz-head"><h3>Remaining gap by activity</h3><p>Shows volume still required</p></div>
+            <div class="chart-wrap"><canvas id="activityGapChart"></canvas></div>
+          </article>
+        </div>
+        <div id="performanceList" class="performance-list"></div>
+      </section>
+
+      <section id="missions" class="section" hidden>
+        <div class="section-head">
+          <div>
+            <h2>Medical Missions</h2>
+            <p>Sex and age totals are automatically reconciled against each mission total.</p>
+          </div>
+        </div>
+        <div class="kpi-grid">
+          <article class="kpi-card glass"><div class="kpi-label">Total patients</div><div class="kpi-value" id="missionTotal">—</div></article>
+          <article class="kpi-card glass"><div class="kpi-label">Female</div><div class="kpi-value" id="missionFemale">—</div></article>
+          <article class="kpi-card glass"><div class="kpi-label">Male</div><div class="kpi-value" id="missionMale">—</div></article>
+          <article class="kpi-card glass"><div class="kpi-label">No sex data</div><div class="kpi-value" id="missionNoSex">—</div></article>
+        </div>
+        <div class="viz-grid viz-grid-3 compact-gap">
+          <article class="viz-card glass">
+            <div class="viz-head"><h3>Patients per mission</h3><p>By mission day / location</p></div>
+            <div class="chart-wrap"><canvas id="missionPatientsChart"></canvas></div>
+          </article>
+          <article class="viz-card glass">
+            <div class="viz-head"><h3>Sex distribution</h3><p>All consultations</p></div>
+            <div class="chart-wrap"><canvas id="missionSexChart"></canvas></div>
+          </article>
+          <article class="viz-card glass">
+            <div class="viz-head"><h3>Age grouping</h3><p>All consultations</p></div>
+            <div class="chart-wrap"><canvas id="missionAgeChart"></canvas></div>
+          </article>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Date</th><th>Location</th><th>Total</th><th>Female</th><th>Male</th><th>No SDD</th><th>Child</th><th>Adult</th><th>No age</th><th>Validation</th></tr>
+            </thead>
+            <tbody id="missionsBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="facilities" class="section" hidden>
+        <div class="section-head">
+          <div>
+            <h2>Health Facilities & Activity 3 Support</h2>
+            <p>Catchment population remains separate from direct reach.</p>
+          </div>
+        </div>
+        <div class="info-grid">
+          <article class="info-card glass">
+            <h3>Facility support</h3>
+            <div class="info-row"><span>Facilities supported</span><strong id="facilitiesSupported">—</strong></div>
+            <div class="info-row"><span>RHUs</span><strong id="rhuCount">—</strong></div>
+            <div class="info-row"><span>Provincial hospitals</span><strong id="hospitalCount">—</strong></div>
+            <div class="info-row"><span>Estimated catchment</span><strong id="facilityCatchment">—</strong></div>
+          </article>
+          <article class="info-card glass">
+            <h3>Generators and fuel</h3>
+            <div class="info-row"><span>Generators distributed</span><strong id="facilityGenerators">—</strong></div>
+            <div class="info-row"><span>Fuel distributed</span><strong id="facilityFuel">—</strong></div>
+            <div class="info-row"><span>Generator target</span><strong>25</strong></div>
+          </article>
+          <article class="info-card glass">
+            <h3>Medical rescue boat</h3>
+            <div class="info-row"><span>Reach</span><strong>1 of 1</strong></div>
+            <div class="info-row"><span>Location</span><strong id="boatLocation">—</strong></div>
+            <div class="info-row"><span>Donation period</span><strong id="boatMonth">—</strong></div>
+          </article>
+        </div>
+        <div class="viz-grid viz-grid-2 compact-gap">
+          <article class="viz-card glass">
+            <div class="viz-head"><h3>Generator deployment</h3><p>Distributed vs remaining target</p></div>
+            <div class="chart-wrap"><canvas id="generatorChart"></canvas></div>
+          </article>
+          <article class="viz-card glass">
+            <div class="viz-head"><h3>Support package snapshot</h3><p>Facilities, generators, and catchment scale</p></div>
+            <div class="chart-wrap"><canvas id="facilitySupportChart"></canvas></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="distributions" class="section" hidden>
+        <div class="section-head">
+          <div>
+            <h2>Distributions</h2>
+            <p>Verified household and people totals by assistance modality.</p>
+          </div>
+        </div>
+        <div class="kpi-grid">
+          <article class="kpi-card glass"><div class="kpi-label">Hygiene kits</div><div class="kpi-value" id="distHygiene">—</div></article>
+          <article class="kpi-card glass"><div class="kpi-label">Household kits</div><div class="kpi-value" id="distHousehold">—</div></article>
+          <article class="kpi-card glass"><div class="kpi-label">MPCA</div><div class="kpi-value" id="distMpca">—</div></article>
+          <article class="kpi-card glass"><div class="kpi-label">Total Activity 4 people</div><div class="kpi-value" id="distTotalPeople">—</div></article>
+        </div>
+        <div class="viz-grid viz-grid-2 compact-gap">
+          <article class="viz-card glass">
+            <div class="viz-head"><h3>Households by modality</h3><p>Distribution footprint</p></div>
+            <div class="chart-wrap"><canvas id="distributionHouseholdsChart"></canvas></div>
+          </article>
+          <article class="viz-card glass">
+            <div class="viz-head"><h3>People reached by modality</h3><p>Activity 4 direct reach mix</p></div>
+            <div class="chart-wrap"><canvas id="distributionPeopleChart"></canvas></div>
+          </article>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Modality</th><th>Date</th><th>Location</th><th>Households</th><th>People</th></tr>
+            </thead>
+            <tbody id="distributionBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="quality" class="section" hidden>
+        <div class="section-head">
+          <div>
+            <h2>Data Quality Centre</h2>
+            <p>Only unresolved or traceable source-cleaning items are retained here.</p>
+          </div>
+        </div>
+        <div class="kpi-grid">
+          <article class="kpi-card glass">
+            <div class="kpi-label">Tracked data-quality items</div>
+            <div class="kpi-value" id="qualityCount">—</div>
+            <div class="kpi-note">Fuel, household-kit total, Activity 1.2 category, Activity 4 duplication, and facility/location issues were removed as resolved assumptions.</div>
+          </article>
+        </div>
+        <div id="qualityList" class="quality-grid"></div>
+      </section>
+
+
+      <footer>
+        Reporting baseline: 11 August 2026 · All core totals are calculated from data.js rather than hard-coded into the interface.
+      </footer>
+    </main>
+  </div>
+
+  <nav class="mobile-nav" aria-label="Mobile dashboard navigation">
+    <button class="nav-button active" data-section="overview">Overview</button>
+    <button class="nav-button" data-section="performance">Performance</button>
+    <button class="nav-button" data-section="missions">Missions</button>
+    <button class="nav-button" data-section="distributions">Distributions</button>
+    <button class="nav-button" data-section="quality">Quality</button>
+  </nav>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
